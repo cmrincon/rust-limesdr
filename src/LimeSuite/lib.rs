@@ -1,4 +1,3 @@
-
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(dead_code)]
@@ -47,7 +46,7 @@ pub const LMS_LOG_DEBUG:i32   = 4;
 #[link(name = "LimeSuite")]
 extern "C" {
     pub fn LMS_GetDeviceList(dev_list: *mut lms_info_str_t) -> c_int;
-    pub fn LMS_Open(device: *mut *mut lms_device_t, info: &lms_info_str_t, args: *mut c_void) -> c_int;
+    pub fn LMS_Open(device: *mut *mut lms_device_t, info: *const lms_info_str_t, args: *mut c_void) -> c_int;
     pub fn LMS_Close(device: *mut lms_device_t) -> c_int;
     pub fn LMS_Init(device: *mut lms_device_t) -> c_int;
     pub fn LMS_GetNumChannels(device: *mut lms_device_t, dir_tx: &bool ) -> c_int;
@@ -172,16 +171,16 @@ extern "C" {
     pub fn  LMS_GetDeviceInfo(device: *mut lms_device_t)->*const lms_dev_info_t;
     pub fn  LMS_GetLibraryVersion()-> *const c_char;
 
-    pub fn LMS_RegisterLogHandler(handler: *const fn (lvl: i32 , msg: *const c_char)->c_void ) -> c_void;
+    pub fn LMS_RegisterLogHandler(handler: extern fn (lvl: i32 , msg: *const c_char)->c_void ) -> c_void;
 
 
 }
 
 #[repr(C)]
 pub struct lms_range_t {
-    min: c_double,
-    max: c_double,
-    step: c_double
+    pub min: c_double,
+    pub max: c_double,
+    pub step: c_double
 }
 
 #[repr(C)]

@@ -1,7 +1,8 @@
 mod LimeSuite;
 
-use crate::LimeSuite::lib as limesuite;
+use crate::LimeSuite::limeSuite;
 
 fn main() {
-    println!("Hello, Odroid N2!");
+    println!("{:?}", limeSuite::get_device_list().unwrap());
 }
+
