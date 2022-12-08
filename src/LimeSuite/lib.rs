@@ -56,43 +56,43 @@ extern "C" {
             oversample: size_t ) -> c_int;
     pub fn LMS_GetSampleRate(device: *mut lms_device_t, dir_tx: &bool,
             chan: &size_t , host_Hz: *mut c_double, rf_Hz: *mut c_double) -> c_int;
-    pub fn LMS_GetSampleRateRange(device: *mut lms_device_t, dir_tx: &bool,
+    pub fn LMS_GetSampleRateRange(device: *mut lms_device_t, dir_tx: bool,
             range: *mut lms_range_t) -> c_int;
-    pub fn LMS_SetLOFrequency(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, frequency: &c_double)-> c_int;
-    pub fn LMS_GetLOFrequency(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, frequency: *mut c_double)-> c_int;
-    pub fn LMS_GetLOFrequencyRange(device: *mut lms_device_t, dir_tx: &bool,
+    pub fn LMS_SetLOFrequency(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, frequency: c_double) -> c_int;
+    pub fn LMS_GetLOFrequency(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, frequency: *mut c_double)-> c_int;
+    pub fn LMS_GetLOFrequencyRange(device: *mut lms_device_t, dir_tx: bool,
             range: *mut lms_range_t)-> c_int;
-    pub fn LMS_GetAntennaList(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, list: *mut lms_name_t) -> c_int;
-    pub fn LMS_SetAntenna(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, index: &size_t ) -> c_int;
-    pub fn  LMS_GetAntenna(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t ) -> c_int;
-    pub fn  LMS_GetAntennaBW(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t , index: &size_t , range: *mut lms_range_t) -> c_int;
-    pub fn  LMS_SetNormalizedGain(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t ,gain: &c_double ) -> c_int;
-    pub fn LMS_SetGaindB(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, gain: &u32) -> c_int;
-    pub fn LMS_GetNormalizedGain(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t, gain: *mut c_double) -> c_int;
-    pub fn LMS_GetGaindB(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, gain: *mut u32)-> c_int;
-    pub fn LMS_SetLPFBW(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, bandwidth: &c_double)-> c_int;
-    pub fn LMS_GetLPFBW(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, bandwidth: *mut c_double)-> c_int;
+    pub fn LMS_GetAntennaList(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, list: *mut lms_name_t) -> c_int;
+    pub fn LMS_SetAntenna(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, index: size_t ) -> c_int;
+    pub fn  LMS_GetAntenna(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t ) -> c_int;
+    pub fn  LMS_GetAntennaBW(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t , index: size_t , range: *mut lms_range_t) -> c_int;
+    pub fn  LMS_SetNormalizedGain(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t ,gain: c_double ) -> c_int;
+    pub fn LMS_SetGaindB(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, gain: u32) -> c_int;
+    pub fn LMS_GetNormalizedGain(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t, gain: *mut c_double) -> c_int;
+    pub fn LMS_GetGaindB(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, gain: *mut u32)-> c_int;
+    pub fn LMS_SetLPFBW(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, bandwidth: c_double)-> c_int;
+    pub fn LMS_GetLPFBW(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, bandwidth: *mut c_double)-> c_int;
 
-    pub fn LMS_GetLPFBWRange(device: *mut lms_device_t, dir_tx: &bool,
+    pub fn LMS_GetLPFBWRange(device: *mut lms_device_t, dir_tx: bool,
         range: *mut lms_range_t)-> c_int;
-    pub fn LMS_SetLPF(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, enable: &bool) -> c_int;
-    pub fn LMS_SetGFIRLPF(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, enabled: &bool, bandwidth: &c_double) -> c_int;
-    pub fn LMS_Calibrate(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, bw: &c_double , flags: &u32) -> c_int;
+    pub fn LMS_SetLPF(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, enable: bool) -> c_int;
+    pub fn LMS_SetGFIRLPF(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, enabled: bool, bandwidth: c_double) -> c_int;
+    pub fn LMS_Calibrate(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, bw: c_double , flags: u32) -> c_int;
     pub fn LMS_LoadConfig(device: *mut lms_device_t, filename: *const c_char) -> c_int;
     pub fn LMS_SaveConfig(device: *mut lms_device_t, filename: *const c_char) -> c_int;
     pub fn LMS_SetTestSignal(device: *mut lms_device_t, dir_tx: &bool,
