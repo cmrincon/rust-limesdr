@@ -1,5 +1,5 @@
 [package]
-name = "pw1"
+name = "rust-limesuite"
 version = "0.0.1"
 edition = "2021"
 build = "build.rs"
