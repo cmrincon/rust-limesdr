@@ -13,7 +13,7 @@ pub type lms_name_t = [c_char;16];
 pub const LMS_SUCCESS: c_int = 0;
 pub const LMS_CH_TX: bool = true;
 pub const LMS_CH_RX: bool = false;
-pub const LMS_NCO_VAL_COUNT: c_int = 16;
+pub const LMS_NCO_VAL_COUNT: usize = 16;
 
 pub const BOARD_PARAM_DAC: u8 = 0;
 pub const BOARD_PARAM_TEMP: u8 = 1;
@@ -41,6 +41,7 @@ pub const LMS_LOG_WARNING:i32  =2;
 pub const LMS_LOG_INFO:i32     =3;
 
 pub const LMS_LOG_DEBUG:i32   = 4;
+
 
 
 #[link(name = "LimeSuite")]
@@ -95,38 +96,38 @@ extern "C" {
         chan: size_t, bw: c_double , flags: u32) -> c_int;
     pub fn LMS_LoadConfig(device: *mut lms_device_t, filename: *const c_char) -> c_int;
     pub fn LMS_SaveConfig(device: *mut lms_device_t, filename: *const c_char) -> c_int;
-    pub fn LMS_SetTestSignal(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, sig: &lms_testsig_t , dc_i: &i16 , dc_q: &i16 );
-    pub fn LMS_GetTestSignal(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, sig: *mut lms_testsig_t) -> c_int;
-    pub fn LMS_GetChipTemperature(dev: *mut lms_device_t, ind: &size_t,
+    pub fn LMS_SetTestSignal(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, sig: &lms_testsig_t , dc_i: i16 , dc_q: i16 ) -> c_int;
+    pub fn LMS_GetTestSignal(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, sig: *mut lms_testsig_t) -> c_int;
+    pub fn LMS_GetChipTemperature(dev: *mut lms_device_t, ind: size_t,
         temp: *mut c_double) -> c_int;
-    pub fn LMS_SetSampleRateDir(device: *mut lms_device_t, dir_tx: &bool,
-        rate: &c_double, oversample: &size_t) -> c_int;
-    pub fn ALMS_SetNCOFrequency(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, freq: *const c_double, pho: &c_double) -> c_int;
-    pub fn LMS_GetNCOFrequency(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, freq: *mut c_double, pho: *mut c_double)-> c_int;
-    pub fn LMS_SetNCOPhase(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, phases: *const c_double, fcw: &c_double) -> c_int;
-    pub fn LMS_GetNCOPhase(ldevice: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, phases: *mut c_double, fcw: *mut c_double)->c_int;
-    pub fn LMS_SetNCOIndex(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, index: &i32 , downconv: &bool ) -> c_int;
-    pub fn LMS_GetNCOIndex(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t ) -> c_int;
-    pub fn LMS_SetGFIRCoeff(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, filt: &lms_gfir_t , coef: *const c_double,count: &size_t) -> c_int;
-    pub fn LMS_GetGFIRCoeff(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, filt: &lms_gfir_t , coef: *const c_double) -> c_int;
-    pub fn LMS_SetGFIR(device: *mut lms_device_t, dir_tx: &bool,
-        chan: &size_t, filt: &lms_gfir_t , enabled: &bool) -> c_int;
-    pub fn LMS_EnableCache(device: *mut lms_device_t, enable: &bool )-> c_int;
+    pub fn LMS_SetSampleRateDir(device: *mut lms_device_t, dir_tx: bool,
+        rate: c_double, oversample: size_t) -> c_int;
+    pub fn LMS_SetNCOFrequency(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, freq: *const c_double, pho: c_double) -> c_int;
+    pub fn LMS_GetNCOFrequency(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, freq: *mut c_double, pho: *mut c_double)-> c_int;
+    pub fn LMS_SetNCOPhase(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, phases: *const c_double, fcw: c_double) -> c_int;
+    pub fn LMS_GetNCOPhase(ldevice: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, phases: *mut c_double, fcw: *mut c_double)->c_int;
+    pub fn LMS_SetNCOIndex(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, index: i32 , downconv: bool ) -> c_int;
+    pub fn LMS_GetNCOIndex(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t ) -> c_int;
+    pub fn LMS_SetGFIRCoeff(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, filt: lms_gfir_t , coef: *const c_double, count: size_t) -> c_int;
+    pub fn LMS_GetGFIRCoeff(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, filt: lms_gfir_t , coef: *const c_double) -> c_int;
+    pub fn LMS_SetGFIR(device: *mut lms_device_t, dir_tx: bool,
+        chan: size_t, filt: lms_gfir_t , enabled: bool) -> c_int;
+    pub fn LMS_EnableCache(device: *mut lms_device_t, enable: bool )-> c_int;
     pub fn LMS_Reset(device: *mut lms_device_t) -> c_int;
-    pub fn LMS_ReadLMSReg(device: *mut lms_device_t, address: &u32 ,
+    pub fn LMS_ReadLMSReg(device: *mut lms_device_t, address: u32 ,
         val: *mut u16) -> c_int;
-    pub fn LMS_WriteLMSReg(device: *mut lms_device_t, address: &u32,
-        val: &u16);
+    pub fn LMS_WriteLMSReg(device: *mut lms_device_t, address: u32,
+        val: u16);
     //pub fn LMS_ReadParam(device: *mut lms_device_t,
     //    param: &LMS7Parameter , val: *mut u16);
     //pub fn LMS_WriteParam(device: *mut lms_device_t,
