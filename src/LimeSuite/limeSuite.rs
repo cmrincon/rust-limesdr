@@ -6,8 +6,7 @@ use crate::LimeSuite::lib::{
     *,
     lms_testsig_t::LMS_TESTSIG_NONE,
     lms_gfir_t::* };
-use std::ffi::{CStr};
-
+use std::ffi::{CStr, c_void};
 pub fn get_device_list() -> Result<std::vec::Vec<String>, ()> {
     let mut list: [lms_info_str_t; 5] = [[0; 256]; 5];
     
@@ -827,7 +826,190 @@ impl Device {
             Err(())
         }
     }
+
+    pub fn LMS_GPIODirRead(&self, len: usize) -> Result<Vec<u8>,()> {
+        let mut buffer = Vec::<u8>::with_capacity(len);
+
+        let res = unsafe {
+            LMS_GPIODirRead(self.dev, buffer.as_mut_ptr(), buffer.capacity())
+        };
+        if res == LMS_SUCCESS {
+            Ok(buffer)
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_GPIODirWrite(&self, buffer: &mut [u8]) -> Result<(),()> {
+        let len = buffer.len(); 
+        let res = unsafe { 
+            LMS_GPIODirWrite(self.dev, buffer.as_ptr(), len)
+        };
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_SetupStream(&self, stream: &mut lms_stream_t) -> Result<(),()> {
+        let res = unsafe {
+            LMS_SetupStream(self.dev, stream)
+        };
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_DestroyStream(&self, stream: &mut lms_stream_t) -> Result<(),()> {
+        let res = unsafe {
+            LMS_DestroyStream(self.dev, stream)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_StartStream(stream: &mut lms_stream_t) -> Result<(),()> {
+        let res = unsafe {
+            LMS_StartStream(stream)
+        };
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_StopStream(stream: &mut lms_stream_t) -> Result<(),()> {
+        let res = unsafe {
+            LMS_StopStream(stream)
+        };
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_RecvStream(stream: &mut lms_stream_t, sample_count: usize, timeout_ms: u32) -> Result<(Vec<u8>,lms_stream_meta_t),()> {
+
+        let mut buffer = Vec::<u8>::with_capacity(sample_count);
+        let mut meta = lms_stream_meta_t {
+            timestamp: 0, 
+            waitForTimestamp: false,
+            flushPartialPacket: false
+        };
+
+        let res = unsafe {
+            LMS_RecvStream(stream, buffer.as_mut_ptr() as *mut c_void, buffer.capacity(), &mut meta, timeout_ms)
+        };
+        if res == LMS_SUCCESS {
+            Ok((buffer,meta))
+        }
+        else {
+            Err(())
+        }
+    }
+    pub fn LMS_GetStreamStatus(stream: &mut lms_stream_t) -> Result<lms_stream_status_t,()> {
+        
+        let mut status = lms_stream_status_t {
+            active: false,
+            fifoFilledCount: 0,
+            fifoSize: 0,
+            underrun: 0,
+            overrun: 0,
+            dropedPackets: 0,
+            sampleRate: 0.0,
+            linkRate: 0.0,
+            timestamp: 0
+        };
+        let res = unsafe {
+            LMS_GetStreamStatus(stream, &mut status)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(status)
+        }
+
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_SendStream(stream: &mut lms_stream_t, buffer: &[u8], meta: &lms_stream_meta_t, timeout_ms: u32) -> Result<u32,()> {
+
+        let len = buffer.len();
+        let buff_void = buffer.as_ptr() as *const c_void;
+        
+        let res = unsafe {
+            LMS_SendStream(stream, buff_void, len, meta, timeout_ms)
+        };
+        if res >= 0 {
+            Ok(res.try_into().unwrap())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_UploadWFM(&self, samples: & &[u8], format: i32) -> Result<(),()> {
+    let chCount = samples.len() as u8;
+    let sample_count = (*samples).len();
+
+    let samples_void = samples.as_ptr() as *const *const c_void;
+
+    let res = unsafe {
+        LMS_UploadWFM(self.dev, samples_void, chCount, sample_count, format)
+    };
+
+    if res == LMS_SUCCESS {
+        Ok(())
+    }
+
+    else {
+        Err(())
+    }
+    }
+
+    pub fn LMS_EnableTxWFM(&self, chan: u32, active: bool) -> Result<(),()> {
+        let res = unsafe {
+            LMS_EnableTxWFM(self.dev, chan, active)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    //pub fn LMS_GetProgramModes(&self) -> Result<&str,()> {
+     //   str
+    //pub fn LMS_Program(&self, data: 
+    
+    //pub fn LMS_GetLibraryVersion() -> &str {
+    //""
+    //}
+
+    //pub fn LMS_RegisterLogHandler() ->
+
+
+
 }
+
 
 
 impl Drop for Device {

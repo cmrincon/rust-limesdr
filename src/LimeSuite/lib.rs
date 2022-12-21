@@ -149,8 +149,8 @@ extern "C" {
     pub fn LMS_Synchronize(dev: *mut lms_device_t, toChip: bool ) -> c_int;
     pub fn LMS_GPIORead(dev: *mut lms_device_t, buffer: *mut u8 , len: size_t) -> c_int;
     pub fn LMS_GPIOWrite(dev: *mut lms_device_t, buffer: *const u8, len: size_t)-> c_int;
-    pub fn LMS_GPIODirRead(dev: *mut lms_device_t, buffer: *mut u8 , len: size_t);
-    pub fn LMS_GPIODirWrite(dev: *mut lms_device_t, buffer: *const u8 , len: size_t);
+    pub fn LMS_GPIODirRead(dev: *mut lms_device_t, buffer: *mut u8 , len: size_t) -> c_int;
+    pub fn LMS_GPIODirWrite(dev: *mut lms_device_t, buffer: *const u8 , len: size_t) -> c_int;
     pub fn LMS_SetupStream(dev: *mut lms_device_t, stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_DestroyStream(dev: *mut lms_device_t, stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_StartStream(stream: *mut lms_stream_t) -> c_int;
@@ -217,9 +217,9 @@ pub enum lms_gfir_t
 
 #[repr(C)]
 pub struct lms_stream_meta_t {
-    timestamp: u64,
-    waitForTimestamp: bool,
-    flushPartialPacket: bool
+    pub timestamp: u64,
+    pub waitForTimestamp: bool,
+    pub flushPartialPacket: bool
 }
 
 #[repr(C)] 
@@ -236,25 +236,25 @@ pub enum linkFmt_t { //Esto dentro de lms_stream_t
 }
 #[repr(C)]
 pub struct lms_stream_t {
-    handle: size_t,
-    isTx: bool,
-    channel: u32,
-    fifoSize: u32,
-    throughputVsLatency: c_float,
-    dataFmt: dataFmt_t,
-    linkFmt: linkFmt_t
+    pub handle: size_t,
+    pub isTx: bool,
+    pub channel: u32,
+    pub fifoSize: u32,
+    pub throughputVsLatency: c_float,
+    pub dataFmt: dataFmt_t,
+    pub linkFmt: linkFmt_t
 }
 #[repr(C)]
 pub struct lms_stream_status_t {
-    active: bool,
-    fifoFilledCount: u32,
-    fifoSize: u32,
-    underrun: u32,
-    overrun: u32,
-    drppedPackets: u32,
-    sampleRate: c_double,
-    linkRate: c_double,
-    timestamp: u64
+    pub active: bool,
+    pub fifoFilledCount: u32,
+    pub fifoSize: u32,
+    pub underrun: u32,
+    pub overrun: u32,
+    pub dropedPackets: u32,
+    pub sampleRate: c_double,
+    pub linkRate: c_double,
+    pub timestamp: u64
 }
 
 #[repr(C)]
