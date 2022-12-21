@@ -59,7 +59,7 @@ impl Device {
 
     pub fn getNumChannels(&self, dir_tx: bool) -> Result<i32,()> {
         let res: i32 = unsafe {
-            LMS_GetNumChannels(self.dev, &dir_tx)
+            LMS_GetNumChannels(self.dev, dir_tx)
         };
 
         if res >= LMS_SUCCESS {
@@ -74,7 +74,7 @@ impl Device {
         chan: usize, enabled: bool) -> Result<(),()> {
 
         let res = unsafe {
-            LMS_EnableChannel(self.dev, &dir_tx, &chan, &enabled)
+            LMS_EnableChannel(self.dev, dir_tx, chan, enabled)
         };
         
         if res >= LMS_SUCCESS {
@@ -87,7 +87,7 @@ impl Device {
 
     pub fn setSampleRate(&self, rate: f64, oversample: usize) -> Result<(),()> {
         let res = unsafe {
-            LMS_SetSampleRate(self.dev, &rate, oversample)
+            LMS_SetSampleRate(self.dev, rate, oversample)
         };
         if res >= LMS_SUCCESS {
             Ok(())
@@ -100,7 +100,7 @@ impl Device {
         let mut host_Hz = 0.0;
         let mut rf_Hz: f64 = 0.0;
         let res: i32 = unsafe {
-            LMS_GetSampleRate(self.dev, &dir_tx, &chan, &mut host_Hz as *mut f64, &mut rf_Hz as *mut f64)
+            LMS_GetSampleRate(self.dev, dir_tx, chan, &mut host_Hz as *mut f64, &mut rf_Hz as *mut f64)
         };
 
         if res >= LMS_SUCCESS {
@@ -665,8 +665,8 @@ impl Device {
 
     pub fn LMS_ReadLMSReg(&self, address: u32) -> Result<u16,()> {
         let mut ret: u16 = 0_u16;
-        if res = unsafe {
-            LMS_ReadLMSReg(self.dev, address, &ret)
+        let res = unsafe {
+            LMS_ReadLMSReg(self.dev, address, &mut ret)
         };
 
         if res == LMS_SUCCESS {

@@ -50,13 +50,13 @@ extern "C" {
     pub fn LMS_Open(device: *mut *mut lms_device_t, info: *const lms_info_str_t, args: *mut c_void) -> c_int;
     pub fn LMS_Close(device: *mut lms_device_t) -> c_int;
     pub fn LMS_Init(device: *mut lms_device_t) -> c_int;
-    pub fn LMS_GetNumChannels(device: *mut lms_device_t, dir_tx: &bool ) -> c_int;
-    pub fn LMS_EnableChannel(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t , enabled: &bool)->c_int;
-    pub fn LMS_SetSampleRate(device: *mut lms_device_t, rate: &c_double,
+    pub fn LMS_GetNumChannels(device: *mut lms_device_t, dir_tx: bool ) -> c_int;
+    pub fn LMS_EnableChannel(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t , enabled: bool)->c_int;
+    pub fn LMS_SetSampleRate(device: *mut lms_device_t, rate: c_double,
             oversample: size_t ) -> c_int;
-    pub fn LMS_GetSampleRate(device: *mut lms_device_t, dir_tx: &bool,
-            chan: &size_t , host_Hz: *mut c_double, rf_Hz: *mut c_double) -> c_int;
+    pub fn LMS_GetSampleRate(device: *mut lms_device_t, dir_tx: bool,
+            chan: size_t , host_Hz: *mut c_double, rf_Hz: *mut c_double) -> c_int;
     pub fn LMS_GetSampleRateRange(device: *mut lms_device_t, dir_tx: bool,
             range: *mut lms_range_t) -> c_int;
     pub fn LMS_SetLOFrequency(device: *mut lms_device_t, dir_tx: bool,
@@ -132,38 +132,38 @@ extern "C" {
     //    param: &LMS7Parameter , val: *mut u16);
     //pub fn LMS_WriteParam(device: *mut lms_device_t,
     //    param: &LMS7Parameter , val: &u16 ) -> c_int;
-    pub fn LMS_ReadFPGAReg(device: *mut lms_device_t, address: &u32,
+    pub fn LMS_ReadFPGAReg(device: *mut lms_device_t, address: u32,
         val: *mut u16) -> c_int;
-    pub fn LMS_WriteFPGAReg(device: *mut lms_device_t, address: &u32,
-        val: &u16) -> c_int;
+    pub fn LMS_WriteFPGAReg(device: *mut lms_device_t, address: u32,
+        val: *mut u16) -> c_int;
     pub fn LMS_ReadCustomBoardParam(device: *mut lms_device_t,
-        id: &u8 , val: *mut c_double, units: &lms_name_t) -> c_int;
+        id: u8 , val: *mut c_double, units: *mut lms_name_t) -> c_int;
     pub fn LMS_WriteCustomBoardParam(device: *mut lms_device_t,
-        id: &u8 , val: &c_double , units: &lms_name_t ) -> c_int;
-    pub fn LMS_GetClockFreq(device: *mut lms_device_t, clk_id: &size_t,
+        id: u8 , val: c_double , units: *const lms_name_t ) -> c_int;
+    pub fn LMS_GetClockFreq(device: *mut lms_device_t, clk_id: size_t,
         freq: *mut c_double) -> c_int;
-    pub fn LMS_SetClockFreq(device: *mut lms_device_t, clk_id: &size_t,
-        freq: &c_double) -> c_int;
-    pub fn LMS_VCTCXOWrite(dev: *mut lms_device_t , val: &u16 ) -> c_int;
+    pub fn LMS_SetClockFreq(device: *mut lms_device_t, clk_id: size_t,
+        freq: c_double) -> c_int;
+    pub fn LMS_VCTCXOWrite(dev: *mut lms_device_t , val: u16 ) -> c_int;
     pub fn LMS_VCTCXORead(dev: *mut lms_device_t, val: *mut u16)-> c_int;
-    pub fn LMS_Synchronize(dev: *mut lms_device_t, toChip: &bool ) -> c_int;
-    pub fn LMS_GPIORead(dev: *mut lms_device_t, buffer: *mut u8 , len: &size_t) -> c_int;
-    pub fn LMS_GPIOWrite(dev: *mut lms_device_t, buffer: *const u8, len: &size_t)-> c_int;
-    pub fn LMS_GPIODirRead(dev: *mut lms_device_t, buffer: *mut u8 , len: &size_t);
-    pub fn LMS_GPIODirWrite(dev: *mut lms_device_t, buffer: *const u8 , len: &size_t);
+    pub fn LMS_Synchronize(dev: *mut lms_device_t, toChip: bool ) -> c_int;
+    pub fn LMS_GPIORead(dev: *mut lms_device_t, buffer: *mut u8 , len: size_t) -> c_int;
+    pub fn LMS_GPIOWrite(dev: *mut lms_device_t, buffer: *const u8, len: size_t)-> c_int;
+    pub fn LMS_GPIODirRead(dev: *mut lms_device_t, buffer: *mut u8 , len: size_t);
+    pub fn LMS_GPIODirWrite(dev: *mut lms_device_t, buffer: *const u8 , len: size_t);
     pub fn LMS_SetupStream(dev: *mut lms_device_t, stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_DestroyStream(dev: *mut lms_device_t, stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_StartStream(stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_StopStream(stream: *mut lms_stream_t) -> c_int;
     pub fn LMS_RecvStream(stream: *mut lms_stream_t, samples: *mut c_void,
-        sample_count: &size_t , meta: *mut lms_stream_meta_t, timeout_ms: &u32 ) -> c_int;
+        sample_count: size_t , meta: *mut lms_stream_meta_t, timeout_ms: u32 ) -> c_int;
         pub fn LMS_GetStreamStatus(stream: *mut lms_stream_t, status: *mut lms_stream_status_t)->c_int;
     pub fn LMS_SendStream(stream: *mut lms_stream_t,
-        samples: *const c_void,sample_count: &size_t,
-        meta: *const lms_stream_meta_t, timeout_ms: &u32)->c_int;
+        samples: *const c_void,sample_count: size_t,
+        meta: *const lms_stream_meta_t, timeout_ms: u32)->c_int;
         pub fn LMS_UploadWFM(device: *mut lms_device_t, samples: *const *const c_void,
-        chCount: &u8 , sample_count: &size_t , format: &i32 )->c_int;
-        pub fn LMS_EnableTxWFM(device: *mut lms_device_t, chan: &u32, active: &bool )->c_int;
+        chCount: u8 , sample_count: size_t , format: i32 )->c_int;
+        pub fn LMS_EnableTxWFM(device: *mut lms_device_t, chan: u32, active: bool )->c_int;
 
     pub fn LMS_GetProgramModes(device: *mut lms_device_t, list: *mut lms_name_t);
 
@@ -173,7 +173,6 @@ extern "C" {
     pub fn  LMS_GetLibraryVersion()-> *const c_char;
 
     pub fn LMS_RegisterLogHandler(handler: extern fn (lvl: i32 , msg: *const c_char)->c_void ) -> c_void;
-
 
 }
 
