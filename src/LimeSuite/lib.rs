@@ -127,7 +127,7 @@ extern "C" {
     pub fn LMS_ReadLMSReg(device: *mut lms_device_t, address: u32 ,
         val: *mut u16) -> c_int;
     pub fn LMS_WriteLMSReg(device: *mut lms_device_t, address: u32,
-        val: u16);
+        val: u16) -> c_int;
     //pub fn LMS_ReadParam(device: *mut lms_device_t,
     //    param: &LMS7Parameter , val: *mut u16);
     //pub fn LMS_WriteParam(device: *mut lms_device_t,
@@ -135,7 +135,7 @@ extern "C" {
     pub fn LMS_ReadFPGAReg(device: *mut lms_device_t, address: u32,
         val: *mut u16) -> c_int;
     pub fn LMS_WriteFPGAReg(device: *mut lms_device_t, address: u32,
-        val: *mut u16) -> c_int;
+        val: u16) -> c_int;
     pub fn LMS_ReadCustomBoardParam(device: *mut lms_device_t,
         id: u8 , val: *mut c_double, units: *mut lms_name_t) -> c_int;
     pub fn LMS_WriteCustomBoardParam(device: *mut lms_device_t,

@@ -671,13 +671,164 @@ impl Device {
 
         if res == LMS_SUCCESS {
 
+            Ok(ret)
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_WriteLMSReg(&self, address: u32, val: u16) -> Result<(),()> {
+
+        let res = unsafe {
+            LMS_WriteLMSReg(self.dev, address, val)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+}
+
+    pub fn LMS_ReadFPGAReg(&self, address: u32) -> Result<u16,()> {
+        let mut val: u16 = 0_u16;
+        let res = unsafe {
+            LMS_ReadFPGAReg(self.dev, address, &mut val)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(val)
+        }
+
+        else {
+            Err(())
+        }
+}
+
+    pub fn LMS_WriteFPGAReg(&self, address: u32, val: u16) -> Result<(),()> {
+
+        let res = unsafe {
+            LMS_WriteFPGAReg(self.dev, address, val)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+
+        else {
+            Err(())
+        }
+
+    }
+
+    //pub fn ReadCustomBoardParam(&self, id: u8) -> Result((f64, 
+
+    //pub fn WriteCustomBoardParam(&self, id: u8, val f64 ...) -> 
+    
+    pub fn LMS_GetClockFreq(&self, clk_id: usize) -> Result<f64,()> {
+        let mut ret: f64 = 0.0;
+        let res = unsafe {
+            LMS_GetClockFreq(self.dev, clk_id, &mut ret)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(ret)
+        }
+
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_SetCLockFreq(&self, clk_id: usize, freq: f64) -> Result<(),()> {
+
+        let res = unsafe {
+            LMS_SetClockFreq(self.dev, clk_id, freq)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_VCTCXOWrite(&self, val: u16) -> Result<(),()> {
+        let res = unsafe {
+            LMS_VCTCXOWrite(self.dev, val)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+    
+    pub fn LMS_VCTCXORead(&self) -> Result<u16,()> {
+        let mut val: u16 = 0;
+        let res = unsafe {
+            LMS_VCTCXORead(self.dev, &mut val)
+        };
+
+        if res == LMS_SUCCESS {
+                Ok(val)
+        }
+        else {
+            Err(())
         }
     }
 
 
+    pub fn LMS_Synchronize(&self, toChip: bool) -> Result<(),()> {
 
+        let res = unsafe {
+            LMS_Synchronize(self.dev, toChip)
+        };
 
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
+
+    pub fn LMS_GPIORead(&self, len: usize) -> Result<Vec<u8>,()> {
+
+        let mut buffer = Vec::<u8>::with_capacity(len);
+        let res = unsafe {
+            LMS_GPIORead(self.dev, buffer.as_mut_ptr(),buffer.capacity())
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(buffer)
+        }
+
+        else {
+            Err(())
+        }
+    }
+    pub fn LMS_GPIOWrite(&self, buffer: &mut [u8]) -> Result<(),()> {
+        let len = buffer.len();
+
+        let res = unsafe {
+            LMS_GPIOWrite(self.dev, buffer.as_mut_ptr(), len)
+        };
+
+        if res == LMS_SUCCESS {
+            Ok(())
+        }
+        else {
+            Err(())
+        }
+    }
 }
+
 
 impl Drop for Device {
     fn drop(&mut self) {
