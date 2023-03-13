@@ -721,7 +721,7 @@ impl Device {
         }
 
     }
-
+    /* NOT IMPLEMENTED YET */
     //pub fn ReadCustomBoardParam(&self, id: u8) -> Result((f64, 
 
     //pub fn WriteCustomBoardParam(&self, id: u8, val f64 ...) -> 
@@ -995,7 +995,7 @@ impl Device {
             Err(())
         }
     }
-
+    //NOT IMPLEMENTED YET
     //pub fn LMS_GetProgramModes(&self) -> Result<&str,()> {
      //   str
     //pub fn LMS_Program(&self, data: 
