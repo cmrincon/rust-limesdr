@@ -402,7 +402,8 @@ impl Device {
 //filename should have a null terminated char \0 at the end.
     pub fn LMS_LoadConfig(&self, filename: &str) -> Result<(),()> {
     //Is from_btes_with_nul the right function for this????
-        let c_filename = CStr::from_bytes_with_nul(filename.as_bytes());
+        let s = String::from(filename) + "\0";
+        let c_filename = CStr::from_bytes_with_nul(s.as_bytes());
         if let Err(_) = c_filename  {
             return Err(());
         }
